@@ -1,9 +1,12 @@
-﻿using OpenQA.Selenium;
+﻿using System.Collections.ObjectModel;
+using OpenQA.Selenium;
 
 namespace Framework
 {
     public class UsersPage
     {
+        const int columnsCount = 5;
+
         public static bool IsAt
         {
             get
@@ -21,26 +24,43 @@ namespace Framework
         {
             get
             {
-                var trs = Driver.Instance.FindElements(By.TagName("tr"));
-                if (trs.Count >= 2)
+                return IsUserPresent("admin");
+            }
+        }
+
+        public static bool IsUserPresent(string email)
+        {
+            var trs = Driver.Instance.FindElements(By.TagName("tr"));
+            if (trs.Count >= 2)
+            {
+                var tds = Driver.Instance.FindElements(By.TagName("td"));
+                if (tds.Count >= 3)
                 {
-                    var tds = Driver.Instance.FindElements(By.TagName("td"));
-                    if (tds.Count >= 3)
+                    if (IsPresentEmail(email, tds))
                     {
-                        if (tds[2].Text.Contains("admin"))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
-                return false;
             }
+            return false;
         }
 
         public static void ViewAdmin()
         {
             var anchorViewAdmin = Driver.Instance.FindElements(By.ClassName("btn-default"))[1];
             anchorViewAdmin.Click();
+        }
+
+        private static bool IsPresentEmail(string email, ReadOnlyCollection<IWebElement> tds)
+        {
+            for (int i = 2; i < tds.Count; i += columnsCount)
+            {
+                if (tds[i].Text.Contains(email))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

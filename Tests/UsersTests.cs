@@ -21,6 +21,8 @@ namespace Tests
                 .WithBirthDay(new DateTime(2000, 2, 3))
                 .WithNotes("Notes Maria Rossi")
                 .Create();
+
+            Assert.IsTrue(UsersPage.IsUserPresent("maria.rossi@email.it"));
         }
     }
 }
