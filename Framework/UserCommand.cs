@@ -60,10 +60,38 @@ namespace Framework
             var buttonNew = Driver.Instance.FindElement(By.ClassName("btn-default"));
             buttonNew.Click();
 
+            FillFields();
+
+            var createButton = Driver.Instance.FindElement(By.ClassName("btn-primary"));
+            createButton.Click();
+        }
+
+        public void Edit(int index)
+        {
+            var buttonEdit = Driver.Instance.FindElements(By.ClassName("btn-default"))[index];
+            buttonEdit.Click();
+
+            FillFields();
+
+            var saveButton = Driver.Instance.FindElement(By.ClassName("btn-primary"));
+            saveButton.Click();
+        }
+
+        public void Delete(int index)
+        {
+            var buttonDelete = Driver.Instance.FindElements(By.ClassName("btn-default"))[index];
+            buttonDelete.Click();
+            Driver.Instance.SwitchTo().Alert().Accept();
+        }
+
+        private void FillFields()
+        {
             var firstName = Driver.Instance.FindElement(By.Id("first-name"));
+            firstName.Clear();
             firstName.SendKeys(this.firstName);
 
             var lastName = Driver.Instance.FindElement(By.Id("last-name"));
+            lastName.Clear();
             lastName.SendKeys(this.lastName);
 
             var email = Driver.Instance.FindElement(By.Id("email"));
@@ -82,13 +110,12 @@ namespace Framework
             additionalPanel.Click();
 
             var birthday = Driver.Instance.FindElement(By.Id("birthday"));
+            birthday.Clear();
             birthday.SendKeys(this.birthday.ToString("dd/MM/yyyy"));
 
             var notes = Driver.Instance.FindElement(By.Id("notes"));
+            notes.Clear();
             notes.SendKeys(this.notes);
-
-            var createButton = Driver.Instance.FindElement(By.ClassName("btn-primary"));
-            createButton.Click();
         }
     }
 }

@@ -22,5 +22,15 @@ namespace Framework
         {
             return new UserCommand();
         }
+
+        public static UserCommand EditUser()
+        {
+            return new UserCommand();
+        }
+
+        public static UserCommand DeleteUser()
+        {
+            return new UserCommand();
+        }
     }
 }

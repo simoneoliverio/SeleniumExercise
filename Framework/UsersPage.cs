@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using OpenQA.Selenium;
 
 namespace Framework
@@ -6,7 +7,7 @@ namespace Framework
     public class UsersPage
     {
         const int columnsCount = 5;
-
+        
         public static bool IsAt
         {
             get
@@ -40,6 +41,40 @@ namespace Framework
                     {
                         return true;
                     }
+                }
+            }
+            return false;
+        }
+
+        public static bool IsUserPresent(string email, string firstName, string lastName, string office)
+        {
+            var trs = Driver.Instance.FindElements(By.TagName("tr"));
+            if (trs.Count >= 2)
+            {
+                var tds = Driver.Instance.FindElements(By.TagName("td"));
+                if (tds.Count >= 3)
+                {
+                    if (IsPresentUser(email, firstName, lastName, office, tds))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static bool IsPresentUser(string email, string firstName, string lastName, string office, ReadOnlyCollection<IWebElement> tds)
+        {
+            for (int i = 0; i < tds.Count; i += columnsCount)
+            {
+                if (
+                        tds[i].Text.Equals(firstName) &&
+                        tds[i + 1].Text.Equals(lastName) &&
+                        tds[i + 2].Text.Equals(email) &&
+                        tds[i + 3].Text.Equals(office)
+                    )
+                {
+                    return true;
                 }
             }
             return false;
