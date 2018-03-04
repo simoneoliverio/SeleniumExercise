@@ -10,7 +10,7 @@ namespace Tests
         [TestMethod]
         public void Can_Add_New_User()
         {
-            LoginPage.LoginAs("admin@mail.com").WithPassword("abc123aa").Login();
+            LoginPage.LoginAs("admin@mail.com").WithPassword("abc123").Login();
 
             UserPage.AddNewUser()
                 .WithFirstName("Maria")
