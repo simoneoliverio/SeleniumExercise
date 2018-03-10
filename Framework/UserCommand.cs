@@ -1,5 +1,7 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 
 namespace Framework
 {
@@ -12,6 +14,9 @@ namespace Framework
         private UserGender gender;
         private DateTime birthday;
         private string notes;
+
+        private const string deleteButton = "Delete";
+        private const string editButton = "Edit";
 
         public UserCommand WithFirstName(string firstName)
         {
@@ -66,9 +71,10 @@ namespace Framework
             createButton.Click();
         }
 
-        public void Edit(int index)
+        public void Edit()
         {
-            var buttonEdit = Driver.Instance.FindElements(By.ClassName("btn-default"))[index];
+            IWebElement buttonEdit = GetButtonByText(editButton);
+            WaitClickable(editButton);
             buttonEdit.Click();
 
             FillFields();
@@ -76,12 +82,28 @@ namespace Framework
             var saveButton = Driver.Instance.FindElement(By.ClassName("btn-primary"));
             saveButton.Click();
         }
-
-        public void Delete(int index)
+        
+        public void Delete()
         {
-            var buttonDelete = Driver.Instance.FindElements(By.ClassName("btn-default"))[index];
+            IWebElement buttonDelete = GetButtonByText(deleteButton);
+            WaitClickable(deleteButton);
             buttonDelete.Click();
+
             Driver.Instance.SwitchTo().Alert().Accept();
+        }
+
+        private IWebElement GetButtonByText(string text)
+        {
+            IWebElement row = Driver.Instance.FindElement(By.XPath($"//tr[td[contains(text(), '{email}')]]"));
+            IReadOnlyCollection<IWebElement> buttons = row.FindElements(By.TagName("button"));
+            foreach (IWebElement button in buttons)
+            {
+                if (button.Text == text)
+                {
+                    return button;
+                }
+            }
+            throw new Exception($"Button '{text}' not found");
         }
 
         private void FillFields()
@@ -116,6 +138,12 @@ namespace Framework
             var notes = Driver.Instance.FindElement(By.Id("notes"));
             notes.Clear();
             notes.SendKeys(this.notes);
+        }
+
+        private void WaitClickable(string text)
+        {
+            var wait = new WebDriverWait(Driver.Instance, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//button[contains(text(), '{text}')]")));
         }
     }
 }

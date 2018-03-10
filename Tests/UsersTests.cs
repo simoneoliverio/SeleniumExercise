@@ -41,7 +41,7 @@ namespace Tests
                 .WithGender(UserGender.Female)
                 .WithBirthDay(new DateTime(2000, 2, 4))
                 .WithNotes("Update Maria Rossi")
-                .Edit(8); // Index button Edit related to this user. TODO: Find a way to calculate index in the framework, starting from the user email
+                .Edit();
 
             Assert.IsTrue(UsersPage.IsUserPresent("maria.rossi@email.it", "Maria1", "Rossi1", "Tokio"));
         }
@@ -50,7 +50,7 @@ namespace Tests
         {
             UserPage.DeleteUser()
                 .WithEmail("maria.rossi@email.it")
-                .Delete(9); // Index button Delete related to this user. TODO: Find a way to calculate index in the framework, starting from the user email
+                .Delete();
 
             Assert.IsFalse(UsersPage.IsUserPresent("maria.rossi@email.it"));
         }
