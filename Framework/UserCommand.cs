@@ -74,7 +74,7 @@ namespace Framework
         public void Edit()
         {
             IWebElement buttonEdit = GetButtonByText(editButton);
-            WaitClickable(editButton);
+            //WaitClickable(editButton);
             buttonEdit.Click();
 
             FillFields();
@@ -86,7 +86,7 @@ namespace Framework
         public void Delete()
         {
             IWebElement buttonDelete = GetButtonByText(deleteButton);
-            WaitClickable(deleteButton);
+            //WaitClickable(deleteButton);
             buttonDelete.Click();
 
             Driver.Instance.SwitchTo().Alert().Accept();
@@ -140,10 +140,10 @@ namespace Framework
             notes.SendKeys(this.notes);
         }
 
-        private void WaitClickable(string text)
-        {
-            var wait = new WebDriverWait(Driver.Instance, TimeSpan.FromSeconds(10));
-            wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//button[contains(text(), '{text}')]")));
-        }
+        //private void WaitClickable(string text)
+        //{
+        //    var wait = new WebDriverWait(Driver.Instance, TimeSpan.FromSeconds(10));
+        //    wait.Until(ExpectedConditions.ElementToBeClickable(By.XPath($"//button[contains(text(), '{text}')]")));
+        //}
     }
 }
